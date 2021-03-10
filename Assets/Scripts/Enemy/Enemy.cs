@@ -19,6 +19,7 @@ public abstract class Enemy : MonoBehaviour
     protected SpriteRenderer _enemySprite;
     protected EnemyAnimation _enemyAnim;
     protected bool flip;
+    protected Rigidbody2D _rigid;
 
 
     private void Start()
@@ -32,6 +33,7 @@ public abstract class Enemy : MonoBehaviour
         Alive = true;
         _enemyAnim = GetComponentInChildren<EnemyAnimation>();
         _enemySprite = GetComponentInChildren<SpriteRenderer>();
+        _rigid = GetComponent<Rigidbody2D>();
     }
 
     public virtual void Move()
@@ -111,5 +113,6 @@ public abstract class Enemy : MonoBehaviour
         Alive = false;
         Debug.Log("enemy killed");
         _enemyAnim.Die();
+        _rigid.gravityScale = 1; //makes enemy not float if he gets rolled midair
     }
 }

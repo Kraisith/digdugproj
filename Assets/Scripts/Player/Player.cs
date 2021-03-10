@@ -337,6 +337,7 @@ public class Player : MonoBehaviour
         Alive = false;
         Debug.Log("player killed");
         _playerAnim.Die();
+        _rigid.gravityScale = 1; //makes player not float if he gets rolled midair
         //play death animation
 
     }

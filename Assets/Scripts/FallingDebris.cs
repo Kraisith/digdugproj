@@ -20,18 +20,20 @@ public class FallingDebris : MonoBehaviour
     {
         player = collision.gameObject.GetComponent<Player>();
         enemy = collision.gameObject.GetComponent<Enemy>();
-        Collider2D[] selfColliders = GetComponents<Collider2D>();
+        //Collider2D[] selfColliders = GetComponents<Collider2D>();
         Debug.Log("collision with tag: " + collision.gameObject.tag);
         if ((player))
         {
             Debug.Log("kill player"); //figure this out at some point
             player.killPlayer();
             //Physics.IgnoreLayerCollision(6, 12);
+            /*
             for (int i = 0; i < selfColliders.Length; i++) //idk need help
             {
                 Debug.Log("collider " + i + " = " + selfColliders[i]);
                 Physics2D.IgnoreCollision(collision.collider, selfColliders[i]);
             }
+            */
 
         }
         if ((enemy))
@@ -39,11 +41,13 @@ public class FallingDebris : MonoBehaviour
             Debug.Log("kill enemy");
             enemy.killEnemy();
             //Physics.IgnoreLayerCollision(12, 13);
+            /*
             for (int i = 0; i < selfColliders.Length; i++) //idk need help
             {
                 Debug.Log("collider "+ i + " = "+ selfColliders[i]);
                 Physics2D.IgnoreCollision(collision.collider, selfColliders[i]);
             }
+            */
         }
     }
 }
