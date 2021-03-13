@@ -94,7 +94,8 @@ public class Player : MonoBehaviour, IDamageable
         }
         if (dir == "left")
         {
-            return digCheckPointsLeft;
+            //return digCheckPointsLeft; //because im now flipping the entire thing, left actually uses the flipped right dig points
+            return digCheckPointsRight;
         }
         //if dir == "none"
         return null;

@@ -2797,7 +2797,7 @@ Tilemap:
       - {fileID: 3786080894526622295, guid: ea3d66a7edd9d46d38e40be89ae8d3cf, type: 3}
       - {fileID: 5045660051849922305, guid: ea3d66a7edd9d46d38e40be89ae8d3cf, type: 3}
       - {fileID: 5612536237972652912, guid: ea3d66a7edd9d46d38e40be89ae8d3cf, type: 3}
-      m_AnimationSpeed: 24.000002
+      m_AnimationSpeed: 24
       m_AnimationTimeOffset: 0
       m_IsLooping: 1
   - first: {x: 3, y: -1, z: 0}
@@ -2874,7 +2874,7 @@ Tilemap:
       - {fileID: 7196270143389622831, guid: ea3d66a7edd9d46d38e40be89ae8d3cf, type: 3}
       - {fileID: 6029957480157117390, guid: ea3d66a7edd9d46d38e40be89ae8d3cf, type: 3}
       - {fileID: -2507161886035769597, guid: ea3d66a7edd9d46d38e40be89ae8d3cf, type: 3}
-      m_AnimationSpeed: 24.000002
+      m_AnimationSpeed: 24
       m_AnimationTimeOffset: 0
       m_IsLooping: 1
   - first: {x: -6, y: 0, z: 0}
@@ -2984,7 +2984,7 @@ Tilemap:
       - {fileID: 7196270143389622831, guid: ea3d66a7edd9d46d38e40be89ae8d3cf, type: 3}
       - {fileID: 6029957480157117390, guid: ea3d66a7edd9d46d38e40be89ae8d3cf, type: 3}
       - {fileID: -2507161886035769597, guid: ea3d66a7edd9d46d38e40be89ae8d3cf, type: 3}
-      m_AnimationSpeed: 24
+      m_AnimationSpeed: 24.000002
       m_AnimationTimeOffset: 0
       m_IsLooping: 1
   - first: {x: -8, y: 1, z: 0}
@@ -3028,7 +3028,7 @@ Tilemap:
       - {fileID: 7196270143389622831, guid: ea3d66a7edd9d46d38e40be89ae8d3cf, type: 3}
       - {fileID: 6029957480157117390, guid: ea3d66a7edd9d46d38e40be89ae8d3cf, type: 3}
       - {fileID: -2507161886035769597, guid: ea3d66a7edd9d46d38e40be89ae8d3cf, type: 3}
-      m_AnimationSpeed: 24.000002
+      m_AnimationSpeed: 24
       m_AnimationTimeOffset: 0
       m_IsLooping: 1
   - first: {x: -4, y: 1, z: 0}
@@ -3149,7 +3149,7 @@ Tilemap:
       - {fileID: 7196270143389622831, guid: ea3d66a7edd9d46d38e40be89ae8d3cf, type: 3}
       - {fileID: 6029957480157117390, guid: ea3d66a7edd9d46d38e40be89ae8d3cf, type: 3}
       - {fileID: -2507161886035769597, guid: ea3d66a7edd9d46d38e40be89ae8d3cf, type: 3}
-      m_AnimationSpeed: 24
+      m_AnimationSpeed: 24.000002
       m_AnimationTimeOffset: 0
       m_IsLooping: 1
   - first: {x: -5, y: 2, z: 0}
@@ -3193,7 +3193,7 @@ Tilemap:
       - {fileID: 7196270143389622831, guid: ea3d66a7edd9d46d38e40be89ae8d3cf, type: 3}
       - {fileID: 6029957480157117390, guid: ea3d66a7edd9d46d38e40be89ae8d3cf, type: 3}
       - {fileID: -2507161886035769597, guid: ea3d66a7edd9d46d38e40be89ae8d3cf, type: 3}
-      m_AnimationSpeed: 24.000002
+      m_AnimationSpeed: 24
       m_AnimationTimeOffset: 0
       m_IsLooping: 1
   - first: {x: 3, y: 2, z: 0}
@@ -3270,7 +3270,7 @@ Tilemap:
       - {fileID: 7196270143389622831, guid: ea3d66a7edd9d46d38e40be89ae8d3cf, type: 3}
       - {fileID: 6029957480157117390, guid: ea3d66a7edd9d46d38e40be89ae8d3cf, type: 3}
       - {fileID: -2507161886035769597, guid: ea3d66a7edd9d46d38e40be89ae8d3cf, type: 3}
-      m_AnimationSpeed: 24.000002
+      m_AnimationSpeed: 24
       m_AnimationTimeOffset: 0
       m_IsLooping: 1
   - first: {x: -3, y: 3, z: 0}
@@ -3292,7 +3292,7 @@ Tilemap:
       - {fileID: 7196270143389622831, guid: ea3d66a7edd9d46d38e40be89ae8d3cf, type: 3}
       - {fileID: 6029957480157117390, guid: ea3d66a7edd9d46d38e40be89ae8d3cf, type: 3}
       - {fileID: -2507161886035769597, guid: ea3d66a7edd9d46d38e40be89ae8d3cf, type: 3}
-      m_AnimationSpeed: 24
+      m_AnimationSpeed: 24.000002
       m_AnimationTimeOffset: 0
       m_IsLooping: 1
   - first: {x: 7, y: 3, z: 0}
@@ -3303,7 +3303,7 @@ Tilemap:
       - {fileID: 7196270143389622831, guid: ea3d66a7edd9d46d38e40be89ae8d3cf, type: 3}
       - {fileID: 6029957480157117390, guid: ea3d66a7edd9d46d38e40be89ae8d3cf, type: 3}
       - {fileID: -2507161886035769597, guid: ea3d66a7edd9d46d38e40be89ae8d3cf, type: 3}
-      m_AnimationSpeed: 24
+      m_AnimationSpeed: 24.000002
       m_AnimationTimeOffset: 0
       m_IsLooping: 1
   - first: {x: -8, y: 4, z: 0}
@@ -3974,7 +3974,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1010447307
 RectTransform:
   m_ObjectHideFlags: 0
