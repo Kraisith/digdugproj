@@ -3,10 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamageable
 {
+    public int Health { get; set; }
+
+    public bool isHit = false;
+
+
     public UnityEvent OnJumpEvent;
 
     public GameObject bulletPrefab;
@@ -39,11 +45,18 @@ public class Player : MonoBehaviour
     //handle to spriteRenderer
     private SpriteRenderer _playerSprite;
 
+    //handle to boxcollider2d
+    private BoxCollider2D _collider;
+
     [SerializeField] private Transform[] digCheckPointsDown;
     [SerializeField] private Transform[] digCheckPointsUp;
     [SerializeField] private Transform[] digCheckPointsRight;
     [SerializeField] private Transform[] digCheckPointsLeft;
     [SerializeField] private bool Alive;
+
+
+    [SerializeField] private int playerHealth;
+
 
     private void Awake()
     {
@@ -59,6 +72,10 @@ public class Player : MonoBehaviour
         //assign handle to SpriteRenderer
         _playerSprite = GetComponentInChildren<SpriteRenderer>();
 
+        //assign handle to BoxCollider2D
+        _collider = GetComponent<BoxCollider2D>();
+
+        Health = playerHealth;
     }
 
     public Transform[] GetDigCheckPoints(string dir)
@@ -96,6 +113,8 @@ public class Player : MonoBehaviour
         {
             isSprinting = false;
         }
+
+
         if (Alive)
         {
             Move(currentInputDirection);
@@ -212,13 +231,18 @@ public class Player : MonoBehaviour
     {
         //if direction.x is greater than 0, face right
         //else if direction.x is less than 0, face left
+        //changed how flip works, since i need the hitbox to flip as well
         if (direction.x > 0)
         {
-            _playerSprite.flipX = false;
+            //_playerSprite.flipX = false;
+
+            transform.localScale = new Vector3(1, 1, 1);
         }
         else if (direction.x < 0)
         {
-            _playerSprite.flipX = true;
+            //_playerSprite.flipX = true;
+
+            transform.localScale = new Vector3(-1, 1, 1);
         }
 
     }
@@ -257,6 +281,7 @@ public class Player : MonoBehaviour
         {
             return;
         }
+        /* //this was for shooting a bullet, but my guy swings a sword so it's not what I want
         Debug.Log("shoot laser/bullet");
         Vector3 pos = firePoint.transform.position;
         Quaternion rot = firePoint.transform.rotation;
@@ -293,6 +318,7 @@ public class Player : MonoBehaviour
         }
         GameObject bullet = Instantiate(bulletPrefab, pos, rot);
         Destroy(bullet, 0.5f);
+        */
         _playerAnim.Attack();
         //cue attack animation
     }
@@ -305,12 +331,79 @@ public class Player : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext input)
     {
-        if (input.started) PerformJump();
+        //jumping isnt a thing anymore, maybe in a different mode but i'll think about that if/when the time comes
+        //if (input.started) PerformJump();
     }
-    public void OnMove(InputAction.CallbackContext input)
+    public void OnMove(InputAction.CallbackContext input) //this is giga scuffed man
     {
-        currentInputDirection = input.ReadValue<Vector2>();
+        Vector2 inputtedDir = input.ReadValue<Vector2>();
+
+        if ((inputtedDir.x != 0) && (inputtedDir.y != 0)) //if the attempted input is in more than one direction
+        {
+            if ((getLastDirection() == "up") || (getLastDirection() == "down")) //if previously going in vertical direction
+            {
+                inputtedDir.y = 0;
+                if (inputtedDir.x > 0) //if wanting to go right
+                {
+                    inputtedDir.x = 1;
+                } else //if wanting to go left
+                {
+                    inputtedDir.x = -1;
+                }
+            } else 
+            if ((getLastDirection() == "right") || (getLastDirection() == "left")) //if previously going in horizontal direction
+            {
+                inputtedDir.x = 0;
+                if (inputtedDir.y > 0) //if wanting to go up
+                {
+                    inputtedDir.y = 1;
+                }
+                else //if wanting to go down
+                {
+                    inputtedDir.y = -1;
+                }
+            }
+        }
+
+        currentInputDirection = inputtedDir;
+        Debug.Log(currentInputDirection);
     }
+
+    //public void OnUp(InputAction.CallbackContext input)
+    //{
+    //    Vector2 direction = Vector2.zero;
+    //    direction.x = 0;
+    //    direction.y = 1;
+    //    Debug.Log(direction);
+    //    currentInputDirection = direction;
+    //}
+
+    //public void OnDown(InputAction.CallbackContext input)
+    //{
+    //    Vector2 direction = Vector2.zero;
+    //    direction.x = 0;
+    //    direction.y = -1;
+    //    Debug.Log(direction);
+    //    currentInputDirection = direction;
+    //}
+
+    //public void OnLeft(InputAction.CallbackContext input)
+    //{
+    //    Vector2 direction = Vector2.zero;
+    //    direction.y = 0;
+    //    direction.x = -1;
+    //    Debug.Log(direction);
+    //    currentInputDirection = direction;
+    //}
+
+    //public void OnRight(InputAction.CallbackContext input)
+    //{
+    //    Vector2 direction = Vector2.zero;
+    //    direction.y = 0;
+    //    direction.x = 1;
+    //    Debug.Log(direction);
+    //    currentInputDirection = direction;
+    //}
 
     public void OnFire(InputAction.CallbackContext input)
     {
@@ -336,6 +429,14 @@ public class Player : MonoBehaviour
     {
         Alive = false;
         Debug.Log("player killed");
+
+        Vector2 collSize = _collider.size;
+        Vector2 collOffset = _collider.offset;
+        collSize.y = 0.01f; //wasn't sure how to disable collision, so this is a workaround
+        collOffset.y = 0.1f;
+        _collider.size = collSize;
+        _collider.offset = collOffset;
+
         _playerAnim.Die();
         _rigid.gravityScale = 1; //makes player not float if he gets rolled midair
         //play death animation
@@ -347,9 +448,31 @@ public class Player : MonoBehaviour
         return transform.position;
     }
 
-    
+    public void Damage()
+    {
+        Debug.Log("Player Damage()");
+        Health--;
+        isHit = true;
+        if (Health < 1)
+        {
+            killPlayer();
+        }
+        else
+        {
+            if (Alive)
+            {
 
 
+                _playerAnim.GetAnimator().SetTrigger("hurt");
+            }
+        }
+        StartCoroutine(ResetHit());
+    }
 
+    IEnumerator ResetHit()
+    {
+        yield return new WaitForSeconds(0.6f);
+        isHit = false;
+    }
 
 }

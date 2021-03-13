@@ -33,4 +33,9 @@ public class EnemyAnimation : MonoBehaviour
         _anim.SetTrigger("death");
     }
 
+    public Animator GetAnimator()
+    {
+        return _anim;
+    }
+
 }

@@ -15,6 +15,7 @@ public class DestructableTiles : MonoBehaviour
 
         //can i get handle to player?
     }
+
     private void OnCollisionEnter2D(Collision2D collision) //do trigger for under player
         /*
          * function to destroy all tiles under player (in player)
