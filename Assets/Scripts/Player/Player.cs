@@ -9,6 +9,7 @@ using UnityEngine.Tilemaps;
 public class Player : MonoBehaviour, IDamageable
 {
     public int Health { get; set; }
+    public int MaxHealth { get; set; }
 
     public bool isHit = false;
 
@@ -76,6 +77,7 @@ public class Player : MonoBehaviour, IDamageable
         _collider = GetComponent<BoxCollider2D>();
 
         Health = playerHealth;
+        MaxHealth = playerHealth;
     }
 
     public Transform[] GetDigCheckPoints(string dir)
@@ -475,5 +477,7 @@ public class Player : MonoBehaviour, IDamageable
         yield return new WaitForSeconds(0.6f);
         isHit = false;
     }
+
+
 
 }
