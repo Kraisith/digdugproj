@@ -24,7 +24,7 @@ public abstract class Enemy : MonoBehaviour
     protected BoxCollider2D _collider;
 
     protected bool isHit = false;
-
+    private LevelManager lvlMnger;
     private void Awake()
     {
         player = FindObjectOfType<Player>();
@@ -44,6 +44,7 @@ public abstract class Enemy : MonoBehaviour
         _enemySprite = GetComponentInChildren<SpriteRenderer>();
         _rigid = GetComponent<Rigidbody2D>();
         _collider = GetComponent<BoxCollider2D>();
+        lvlMnger = FindObjectOfType<LevelManager>();
     }
 
     public virtual void Move()
@@ -146,6 +147,11 @@ public abstract class Enemy : MonoBehaviour
 
     public virtual void killEnemy() //my enemies are all the same size, so the reassignment of size and offset can be the same for all enemies, otherwise it would have to be an abstract function
     {
+        if (Alive) //workaround since this method gets called multiple times for some reason
+        {
+            player.addScore(1000); //player gets 1000 points for killing enemy 
+            lvlMnger.decreaseEnemy();
+        }
         Alive = false;
         Debug.Log("enemy killed");
         Vector2 collSize = _collider.size;
@@ -155,16 +161,11 @@ public abstract class Enemy : MonoBehaviour
         _collider.size = collSize;
         _collider.offset = collOffset;
         _enemyAnim.Die();
-        _rigid.gravityScale = 1; //makes enemy not float if he gets rolled midair
+        _rigid.gravityScale = 1; //makes enemy not float if he gets rolled midair    
     }
 
     public virtual void Attack()
     {
-        //deal damage to player in relation to damage stat
-        //but how do i get a handle to player? I can get a handle to gameObject but how do I translate
-        //that into player? If i change gameObject to player, it gives me nullReferenceException
-        //I could alternatively drag the player object into the player paramater in the editor
-        //but i would have to do that for every single enemy instance. Is there a better way?
         if (!Attacking)
         {
             Attacking = true;

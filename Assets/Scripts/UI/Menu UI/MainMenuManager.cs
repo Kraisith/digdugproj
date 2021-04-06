@@ -5,10 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
+    private LevelManager lvlMnger;
     public void LaunchLevel1()
     {
+        lvlMnger = FindObjectOfType<LevelManager>();
         Debug.Log("Launch lvl 1");
-        StartCoroutine(LoadLevel1Async());
+        lvlMnger.LoadLevel("Level1");
+        //StartCoroutine(LoadLevel1Async());
     }
 
     public void ExitGame()

@@ -3,15 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour, IDamageable
 {
+
+
     public int Health { get; set; }
     public int MaxHealth { get; set; }
 
     public bool isHit = false;
+
+    public int Score { get; set; }
 
 
     public UnityEvent OnJumpEvent;
@@ -58,6 +63,7 @@ public class Player : MonoBehaviour, IDamageable
 
     [SerializeField] private int playerHealth;
 
+    private LevelManager lvlMnger;
 
     private void Awake()
     {
@@ -78,6 +84,18 @@ public class Player : MonoBehaviour, IDamageable
 
         Health = playerHealth;
         MaxHealth = playerHealth;
+
+        Score = 0;
+
+        lvlMnger = FindObjectOfType<LevelManager>();
+
+        Scene scene = SceneManager.GetActiveScene(); //honestly i dont know another way of doing this, i know it shouldnt be in the player class...
+        string nameOfScene = scene.name;
+        if (nameOfScene == "Level1")
+        {
+            lvlMnger.setNumEnemies(4);
+        }
+
     }
 
     public Transform[] GetDigCheckPoints(string dir)
@@ -122,7 +140,7 @@ public class Player : MonoBehaviour, IDamageable
         {
             Move(currentInputDirection);
         }
-        
+
 
 
         /*
@@ -147,7 +165,7 @@ public class Player : MonoBehaviour, IDamageable
 
     private void FixedUpdate()
     {
-        GroundCheck(); 
+        GroundCheck();
     }
 
     private void GroundCheck()
@@ -176,7 +194,7 @@ public class Player : MonoBehaviour, IDamageable
         myVelocity.x = direction.x * runSpeed;
         myVelocity.y = direction.y * runSpeed;
 
-        
+
 
         if (isSprinting)
         {
@@ -184,12 +202,12 @@ public class Player : MonoBehaviour, IDamageable
             myVelocity.y = direction.y * sprintSpeed;
         }
 
-        if (direction.x>0)
+        if (direction.x > 0)
         {
             setDirection("right");
             setLastDirection("right");
 
-        } else if (direction.x<0)
+        } else if (direction.x < 0)
         {
             setDirection("left");
             setLastDirection("left");
@@ -267,7 +285,7 @@ public class Player : MonoBehaviour, IDamageable
     {
         _playerAnim.Jump(true);
         yield return new WaitForSecondsRealtime(0.5f);
-        yield return new WaitUntil(()=> onGround==true);
+        yield return new WaitUntil(() => onGround == true);
 
         _playerAnim.Jump(false);
     }
@@ -280,7 +298,7 @@ public class Player : MonoBehaviour, IDamageable
             return;
         }
         */
-        if (myVelocity.x!=0)
+        if (myVelocity.x != 0)
         {
             return;
         }
@@ -329,7 +347,7 @@ public class Player : MonoBehaviour, IDamageable
     private void PerformSprint()
     {
         isSprinting = true;
-        
+
     }
 
     public void OnJump(InputAction.CallbackContext input)
@@ -353,7 +371,7 @@ public class Player : MonoBehaviour, IDamageable
                 {
                     inputtedDir.x = -1;
                 }
-            } else 
+            } else
             if ((getLastDirection() == "right") || (getLastDirection() == "left")) //if previously going in horizontal direction
             {
                 inputtedDir.x = 0;
@@ -430,6 +448,7 @@ public class Player : MonoBehaviour, IDamageable
 
     public void killPlayer()
     {
+        Health = 0;
         Alive = false;
         Debug.Log("player killed");
 
@@ -443,8 +462,10 @@ public class Player : MonoBehaviour, IDamageable
         _playerAnim.Die();
         _rigid.gravityScale = 1; //makes player not float if he gets rolled midair
         //play death animation
-
+        lvlMnger.LoadLevel("LaunchMenu"); //go to main menu, just for testing
+        //lvlMnger.ResetScene(); //restart the level
     }
+
 
     public Vector3 getPosition()
     {
@@ -455,6 +476,7 @@ public class Player : MonoBehaviour, IDamageable
     {
         Debug.Log("Player Damage()");
         Health--;
+        subtractScore(100); //lose 100 points for getting hit
         isHit = true;
         if (Health < 1)
         {
@@ -478,6 +500,27 @@ public class Player : MonoBehaviour, IDamageable
         isHit = false;
     }
 
+    public void Heal(int toHeal)
+    {
+        int newHealth = Health + toHeal;
+        if (newHealth > MaxHealth)
+        {
+            newHealth = MaxHealth; //can't heal above max hp
+        }
+        Health = newHealth;
+    }
 
+    public void addScore(int toAddScore)
+    {
+        Score += toAddScore;
+    }
 
+    public void subtractScore(int toSubScore)
+    {
+        Score -= toSubScore;
+        if (Score<0) //score cant go below 0
+        {
+            Score = 0;
+        }
+    }
 }
