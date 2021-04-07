@@ -11,5 +11,5 @@ public abstract class Command
         _entity = ent;
     }
 
-    public abstract void Execute(Player plyr);
+    public abstract void Execute();
 }

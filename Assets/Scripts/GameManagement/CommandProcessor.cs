@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CommandProcessor : MonoBehaviour
 {
@@ -19,9 +20,10 @@ public class CommandProcessor : MonoBehaviour
     {
         Debug.Log("doing");
         plyrRef.setReplaying(true);
+
         for (int i = 0; i < commands.Count; i++)
         {
-            commands[i].Execute(plyrRef);
+            commands[i].Execute();
         }
         plyrRef.setReplaying(false);
     }
