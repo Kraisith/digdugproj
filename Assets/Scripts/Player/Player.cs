@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -97,8 +99,26 @@ public class Player : MonoBehaviour, IDamageable, IEntity
         if (nameOfScene == "Level1")
         {
             lvlMnger.setNumEnemies(4);
+        } else if (nameOfScene == "Level2")
+        {
+            lvlMnger.setNumEnemies(6);
+            Score = LoadCurrScore();
         }
 
+    }
+
+    public int LoadCurrScore()
+    {
+        int score = 0;
+        if (File.Exists(Application.persistentDataPath + "/currScore.save"))
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file = File.Open(Application.persistentDataPath + "/currScore.save", FileMode.Open);
+            SaveGame saveGame = (SaveGame)bf.Deserialize(file);
+            file.Close();
+            score = saveGame.score;
+        }
+        return score;
     }
 
     public Transform[] GetDigCheckPoints(string dir)
@@ -441,7 +461,7 @@ public class Player : MonoBehaviour, IDamageable, IEntity
     public void OnFire(InputAction.CallbackContext input)
     {
 
-        //if (input.started) PerformAttack();
+        if (input.started) PerformAttack();
     }
 
     public void OnSprint(InputAction.CallbackContext input)
@@ -475,8 +495,8 @@ public class Player : MonoBehaviour, IDamageable, IEntity
         _playerAnim.Die();
         _rigid.gravityScale = 1; //makes player not float if he gets rolled midair
         //play death animation
-        lvlMnger.LoadLevel("LaunchMenu"); //go to main menu, just for testing
-        //lvlMnger.ResetScene(); //restart the level
+        //lvlMnger.LoadLevel("LaunchMenu"); //go to main menu, just for testing
+        lvlMnger.ResetScene(); //restart the level
     }
 
 

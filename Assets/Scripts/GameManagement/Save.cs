@@ -20,4 +20,17 @@ public class Save : MonoBehaviour
         saveNum++;
         Debug.Log("game saved at " + Application.persistentDataPath);
     }
+
+    public void createCurrScore()
+    {
+        Player plyrRef = FindObjectOfType<Player>();
+        SaveGame svG = new SaveGame();
+        svG.score = plyrRef.Score;
+
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream file = File.Create(Application.persistentDataPath + "/currScore.save");
+        bf.Serialize(file, svG);
+        file.Close();
+        Debug.Log("game saved at " + Application.persistentDataPath);
+    }
 }

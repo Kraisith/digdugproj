@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class LevelManager : MonoBehaviour
 {
     [SerializeField] private int numberOfEnemies = 1;
+    [SerializeField] private Player plyrRef;
     public void ResetScene()
     {
         StartCoroutine(Reset());
@@ -34,8 +35,19 @@ public class LevelManager : MonoBehaviour
     {
         numberOfEnemies--;
         if (numberOfEnemies == 0)
-        { //progress level, currently just goes to main menu
-            StartCoroutine(waitBeforeLoad("LaunchMenu"));
+        {
+            if (SceneManager.GetActiveScene().name == "Level1")
+            {
+                Save save = gameObject.AddComponent<Save>();
+                save.createCurrScore();
+                SceneManager.LoadScene("Level2");
+                
+            } else if (SceneManager.GetActiveScene().name == "Level2")
+            {
+                Save save = gameObject.AddComponent<Save>();
+                save.createSaveGame(); //on completion of the game, save automatically
+                SceneManager.LoadScene("LaunchMenu"); //goes to main menu after level 2
+            }
         }
     }
 
@@ -44,6 +56,7 @@ public class LevelManager : MonoBehaviour
         yield return new WaitForSeconds(2);
         StartCoroutine(Load(lvlName));
     }
+
 
     public void setNumEnemies(int enemyNum)
     {
