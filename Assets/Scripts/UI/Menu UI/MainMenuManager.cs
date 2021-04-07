@@ -14,6 +14,16 @@ public class MainMenuManager : MonoBehaviour
         //StartCoroutine(LoadLevel1Async());
     }
 
+    public void LaunchLeaderboard()
+    {
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Leaderboard");
+    }
+
+    public void LaunchTutorial()
+    {
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Tutorial");
+    }
+
     public void ExitGame()
     {
         Debug.Log("Exit Game");

@@ -25,7 +25,7 @@ public class LevelManager : MonoBehaviour
 
     private IEnumerator Load(string lvlName)
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(0); //uhhh
         Resources.UnloadUnusedAssets();
         SceneManager.LoadScene(lvlName);
     }

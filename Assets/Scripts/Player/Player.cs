@@ -7,10 +7,11 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class Player : MonoBehaviour, IDamageable
+public class Player : MonoBehaviour, IDamageable, IEntity
 {
-
-
+    
+    private bool replaying;
+    private CommandProcessor commProcess;
     public int Health { get; set; }
     public int MaxHealth { get; set; }
 
@@ -67,6 +68,8 @@ public class Player : MonoBehaviour, IDamageable
 
     private void Awake()
     {
+        commProcess = GetComponent<CommandProcessor>();
+        replaying = false;
         Alive = true;
         sprintSpeed = runSpeed * 2.0f;
         //assign handle of rigidbody
@@ -125,6 +128,10 @@ public class Player : MonoBehaviour, IDamageable
     // Update is called once per frame
     void Update()
     {
+        if (replaying)
+        {
+            commProcess.Do();
+        }
         //horizontal input for left and right
         //float move = Input.GetAxisRaw("Horizontal");
 
@@ -173,7 +180,7 @@ public class Player : MonoBehaviour, IDamageable
         numColliders = Physics2D.OverlapCircleNonAlloc(groundCheckTr.position, groundCheckRadius, colliders, groundLayers);
         onGround = (numColliders > 0);
     }
-    private void Move(Vector2 direction)
+    public void Move(Vector2 direction) //made public for replay purposes, but it doesnt work
     {
         /*
         if (currentDirection != "none")
@@ -357,37 +364,42 @@ public class Player : MonoBehaviour, IDamageable
     }
     public void OnMove(InputAction.CallbackContext input) //this is giga scuffed man
     {
-        Vector2 inputtedDir = input.ReadValue<Vector2>();
-
-        if ((inputtedDir.x != 0) && (inputtedDir.y != 0)) //if the attempted input is in more than one direction
+        if (!replaying)
         {
-            if ((getLastDirection() == "up") || (getLastDirection() == "down")) //if previously going in vertical direction
+            Vector2 inputtedDir = input.ReadValue<Vector2>();
+
+            if ((inputtedDir.x != 0) && (inputtedDir.y != 0)) //if the attempted input is in more than one direction
             {
-                inputtedDir.y = 0;
-                if (inputtedDir.x > 0) //if wanting to go right
+                if ((getLastDirection() == "up") || (getLastDirection() == "down")) //if previously going in vertical direction
                 {
-                    inputtedDir.x = 1;
-                } else //if wanting to go left
-                {
-                    inputtedDir.x = -1;
+                    inputtedDir.y = 0;
+                    if (inputtedDir.x > 0) //if wanting to go right
+                    {
+                        inputtedDir.x = 1;
+                    }
+                    else //if wanting to go left
+                    {
+                        inputtedDir.x = -1;
+                    }
                 }
-            } else
-            if ((getLastDirection() == "right") || (getLastDirection() == "left")) //if previously going in horizontal direction
-            {
-                inputtedDir.x = 0;
-                if (inputtedDir.y > 0) //if wanting to go up
+                else
+                if ((getLastDirection() == "right") || (getLastDirection() == "left")) //if previously going in horizontal direction
                 {
-                    inputtedDir.y = 1;
-                }
-                else //if wanting to go down
-                {
-                    inputtedDir.y = -1;
+                    inputtedDir.x = 0;
+                    if (inputtedDir.y > 0) //if wanting to go up
+                    {
+                        inputtedDir.y = 1;
+                    }
+                    else //if wanting to go down
+                    {
+                        inputtedDir.y = -1;
+                    }
                 }
             }
-        }
 
-        currentInputDirection = inputtedDir;
-        Debug.Log(currentInputDirection);
+            currentInputDirection = inputtedDir;
+            Debug.Log(currentInputDirection);
+        }
     }
 
     //public void OnUp(InputAction.CallbackContext input)
@@ -428,7 +440,8 @@ public class Player : MonoBehaviour, IDamageable
 
     public void OnFire(InputAction.CallbackContext input)
     {
-        if (input.started) PerformAttack();
+
+        //if (input.started) PerformAttack();
     }
 
     public void OnSprint(InputAction.CallbackContext input)
@@ -522,5 +535,15 @@ public class Player : MonoBehaviour, IDamageable
         {
             Score = 0;
         }
+    }
+
+    public Vector2 getCurrentMovement() 
+    {
+        return currentInputDirection;
+    }
+
+    public void setReplaying(bool repl)
+    {
+        replaying = repl;
     }
 }
