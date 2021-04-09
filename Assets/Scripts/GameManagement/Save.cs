@@ -11,6 +11,7 @@ public class Save : MonoBehaviour
     {
         Player plyrRef = FindObjectOfType<Player>();
         SaveGame svG = new SaveGame();
+        svG.date = System.DateTime.Now;
         svG.score = plyrRef.Score;
 
         BinaryFormatter bf = new BinaryFormatter();

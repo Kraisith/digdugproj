@@ -103,6 +103,9 @@ public class Player : MonoBehaviour, IDamageable, IEntity
         {
             lvlMnger.setNumEnemies(6);
             Score = LoadCurrScore();
+        } else if (nameOfScene == "Tutorial")
+        {
+            lvlMnger.setNumEnemies(2);
         }
 
     }

@@ -9,6 +9,7 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected string powerUpDrop;
     protected bool Alive;
     protected bool Attacking = false;
+    protected bool TutorialLevel = false;
 
     protected Player player;
     [SerializeField] protected Vector3 playerPosition;
@@ -139,7 +140,7 @@ public abstract class Enemy : MonoBehaviour
     public virtual void Update()
     {
         playerPosition = player.getPosition();
-        if (Alive)
+        if (Alive && !TutorialLevel) //if enemy is alive and the tutorial level is preventing movement
         {
             Move();
         }
@@ -180,5 +181,10 @@ public abstract class Enemy : MonoBehaviour
     {
         yield return new WaitForSeconds(0.6f);
         Attacking = false;
+    }
+
+    public virtual void setTutorialStatus(bool tutStatus)
+    {
+        TutorialLevel = tutStatus;
     }
 }

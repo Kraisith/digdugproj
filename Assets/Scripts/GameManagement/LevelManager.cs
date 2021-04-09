@@ -47,6 +47,9 @@ public class LevelManager : MonoBehaviour
                 Save save = gameObject.AddComponent<Save>();
                 save.createSaveGame(); //on completion of the game, save automatically
                 SceneManager.LoadScene("LaunchMenu"); //goes to main menu after level 2
+            } else if (SceneManager.GetActiveScene().name == "Tutorial")
+            {
+                SceneManager.LoadScene("LaunchMenu"); //go to main menu after completing tutorial
             }
         }
     }
